@@ -8,4 +8,4 @@ item1 = list1[0]
 item2 = list2[1]
 item3 = list3[0]
 item4 = list4[4]
-print(item1, item2, item3, item4)
+print(item1, item2, item3, item4) 
