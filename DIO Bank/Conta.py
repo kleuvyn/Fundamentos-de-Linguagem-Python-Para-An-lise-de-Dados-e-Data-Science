@@ -14,6 +14,7 @@ class ContaBancaria:
 [s] = sacar
 [e] = extrato
 [i] = sair
+[t] = saldo
 => """
 
     def depositar(self, valor):
@@ -51,12 +52,19 @@ while True:
     if opcao == "d":
         valor = float(input("Informe o valor do depósito: "))
         conta.depositar(valor)
+
     elif opcao == "s":
         valor = float(input("Informe o valor do saque: "))
         conta.sacar(valor)
+
+    elif opcao == "t":
+        print("saldo: \n", conta.saldo)
+
     elif opcao == "e":
         print("Extrato: \n",conta.extrato)
+
     elif opcao == "i":
         break
+
     else:
         print("Opção inválida.")
