@@ -1,4 +1,5 @@
 class ContaBancaria:
+
     extrato: str
 
     def __init__(self):
@@ -22,6 +23,7 @@ class ContaBancaria:
             self.saldo += valor
             self.extrato += f"Depósito: R${valor:.2f}\n"
             return True
+
         else:
             print("Valor inválido para depósito.")
             return False
@@ -33,9 +35,11 @@ class ContaBancaria:
                 self.extrato += f"Saque: R${valor:.2f}\n"
                 self.numero_do_saque += 1
                 return True
+
             else:
                 print("Saldo insuficiente.")
                 return False
+
         else:
             print("Limite de saques atingido.")
             return False
@@ -47,6 +51,7 @@ class ContaBancaria:
 conta = ContaBancaria()
 
 while True:
+
     opcao = input(conta.menu())
 
     if opcao == "d":
