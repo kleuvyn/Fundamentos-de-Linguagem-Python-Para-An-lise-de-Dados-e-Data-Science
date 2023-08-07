@@ -24,7 +24,7 @@ plt.ylabel('y')
 plt.grid()
 plt.show()
 
-Transformando para numpy e vetor coluna'
+print('Transformando para numpy e vetor coluna')
 x, y = np.array(x).reshape(-1, 1), np.array(y).reshape(-1, 1)
 # Adicioando bias: para estimar o termo b
 x = np.hstack((x, np.ones(x.shape)))

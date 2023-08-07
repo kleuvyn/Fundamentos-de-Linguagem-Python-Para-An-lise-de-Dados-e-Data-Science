@@ -12,3 +12,6 @@ print('\n04 Ordenação crescente por coluna\n', df.sort_values(by='classificati
 print('\n05 Ordenação crescente por coluna\n', df.sort_values(by=['classification', 'temperatura']))
 print('\n06 Ordenação crescente por coluna\n', df.sort_index())
 print('\n07 Ordenação decrescente por coluna\n', df.sort_index(ascending=False))
+print('\n08.\n', df.groupby(by='classification').mean('classification'))
+print('\n09.\n', df.groupby(by='classification').sum('classification'))
+print('\n10.\n', df.drop('temperatura', axis=1))
