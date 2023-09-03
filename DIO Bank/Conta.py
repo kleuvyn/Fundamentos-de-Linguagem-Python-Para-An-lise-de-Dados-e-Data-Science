@@ -1,74 +1,113 @@
 import random
 
 class ContaBancaria:
+    agencia_fixa = "001"  # Agência fixa
 
-    def __init__(self):
-        self.contas = {}
-        self.agencia = "326644"
+    # Dicionário para armazenar CPFs associados às contas
+    contas_cpf = {}
+
+    def __init__(self, cpf):
+        self.agencia = ContaBancaria.agencia_fixa
+        self.numero_conta = self.gerar_numero_conta()
+        self.cpf = cpf
+        self.saldo = 0
+        self.limite = 500
+        self.extrato_log = []
+        self.numero_do_saque = 0
+        self.LIMITE_DO_SAQUE = 3
+
+    def gerar_numero_conta(self):
+        # Gera um número de conta aleatório com 6 dígitos
+        return str(random.randint(100000, 999999))
 
     def menu(self):
         return """
-[d] = Depositar
-[s] = Sacar
-[e] = Extrato
-[b] = Saldo+
+        [d] = Depositar
+        [s] = Sacar
+        [e] = Extrato
+        [b] = Saldo
+        [i] = Sair
+        => """
 
-[nc] = Nova Conta
-[nu] = Novo Usuario
-[lc] = Lista Contas
-[i] = Sair
-
-=> """
-
-    def novo_usuario(self):
-        cpf = input("CPF do titular da nova conta (somente números): ")
-        if cpf in self.contas:
-            print("Cliente já existe com esse CPF.")
+    def depositar(self, valor):
+        if valor > 0:
+            self.saldo += valor
+            self.extrato_log.append(f'Depósito: +{valor}')
         else:
-            nome = input("Nome Completo: ")
-            endereco = input("Endereço: ")
-            email = input("E-mail: ")
-            numero_conta = self.gerar_numero_conta()
-            self.contas[cpf] = {"nome": nome, "saldo": 0, "extrato": [], "numero_conta": numero_conta, "endereco": endereco, "email": email}
-            print("Cliente criado com sucesso.")
+            return "Valor de depósito inválido."
 
-    def gerar_numero_conta(self):
-        return str(random.randint(10000, 99999))
+    def sacar(self, valor):
+        if self.numero_do_saque < self.LIMITE_DO_SAQUE:
+            if valor > 0:
+                if valor <= self.saldo + self.limite:
+                    self.saldo -= valor
+                    self.extrato_log.append(f'Saque: -{valor}')
+                    self.numero_do_saque += 1
+                else:
+                    return "Saldo insuficiente!"
+            else:
+                return "Valor de saque inválido."
+        else:
+            return "Limite de saques excedido!"
 
+    def extrato(self):
+        return "\n".join(self.extrato_log)
 
-    def lista_contas(self):
-        print("Lista de Contas:")
-        for cpf, dados in self.contas.items():
-            print(f"CPF: {cpf}, Nome: {dados.get('nome', 'Não informado')}, Número da Conta: {dados.get('numero_conta', 'Não informado')}, Endereço: {dados.get('endereco', 'Não informado')}, E-mail: {dados.get('email', 'Não informado')}")
+    def consultar_saldo(self):
+        return f"Saldo atual: {self.saldo}"
 
+    @classmethod
+    def criar_conta_com_cpf(cls, cpf):
+        # Verifica se o CPF já foi utilizado
+        if cpf in cls.contas_cpf:
+            return "CPF já está associado a uma conta."
+        else:
+            nova_conta = cls(cpf)
+            cls.contas_cpf[cpf] = nova_conta
+            return nova_conta
 
-def main():
-    conta = ContaBancaria()
-
+# Exemplo de uso:
+if __name__ == "__main__":
     while True:
-        opcao = input(conta.menu())
+        escolha = input("Escolha uma opção:\n[1] - Criar Conta com CPF\n[2] - Acessar Conta Existente\n[3] - Sair\n=> ")
 
-        if opcao == "d":
-            valor = float(input("\nInforme o valor do depósito: "))
-            conta.depositar(valor)
-        elif opcao == "s":
-            valor = float(input("\nInforme o valor do saque: "))
-            conta.sacar(valor)
-        elif opcao == "b":
-            print("\nSaldo: R$", conta.saldo)
-        elif opcao == "e":
-            print("\nExtrato:\n", conta.extrato())
-        elif opcao == "nc":
-            conta.criar_cliente()
-        elif opcao == "nu":
-            conta.novo_usuario()
-        elif opcao == "lc":
-            conta.lista_contas()
-        elif opcao == "i":
+        if escolha == '1':
+            cpf = input("Digite o CPF para criar a conta: ")
+            resultado = ContaBancaria.criar_conta_com_cpf(cpf)
+            if isinstance(resultado, ContaBancaria):
+                print(f"Conta criada com sucesso!\nAgência: {resultado.agencia}\nNúmero da Conta: {resultado.numero_conta}\nCPF: {resultado.cpf}")
+            else:
+                print(resultado)
+        elif escolha == '2':
+            cpf = input("Digite o CPF para acessar a conta existente: ")
+            if cpf in ContaBancaria.contas_cpf:
+                conta = ContaBancaria.contas_cpf[cpf]
+                print(f"Conta encontrada!\nAgência: {conta.agencia}\nNúmero da Conta: {conta.numero_conta}\nCPF: {conta.cpf}")
+                while True:
+                    escolha_conta = input(conta.menu())
+                    if escolha_conta == 'd':
+                        valor = float(input("Digite o valor para depositar: "))
+                        resultado = conta.depositar(valor)
+                        if resultado:
+                            print(resultado)
+                    elif escolha_conta == 's':
+                        valor = float(input("Digite o valor para sacar: "))
+                        resultado = conta.sacar(valor)
+                        if resultado:
+                            print(resultado)
+                    elif escolha_conta == 'e':
+                        print(conta.extrato())
+                    elif escolha_conta == 'b':
+                        print(conta.consultar_saldo())
+                    elif escolha_conta == 'i':
+                        print("Saindo da conta...")
+                        break
+                    else:
+                        print("Escolha inválida. Tente novamente.")
+            else:
+                print("CPF não encontrado.")
+        elif escolha == '3':
+            print("Saindo...")
             break
         else:
-            print("\nOpção inválida.\n")
-
-if __name__ == "__main__":
-    main()
-
+            print("Escolha inválida. Tente novamente.")
