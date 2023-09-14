@@ -1,0 +1,23 @@
+#Exercicios que preciamos resolver até 28/08/2023
+#
+# definir e renomear as colunas (para subida no mysql)
+# todos floats precisam ter 2 casas decimais
+# tratar os caracteres Æ ascii compativel  alt + 198 ã
+# precisaremos tratar os caracteres £ para ú
+# precisaremos tratar os caracteres ‡ para ç
+# como idendificar os caracteres que estão fora do padrão ?
+# --- dica (vai precisar ler os campos string e verificar se tem caracteres diferentes)
+# vocês já sabem identificar um tipo str!
+# vocês já sabem ler todos caracteres de um conjunto!
+# vocês tem uma tabela ascii ?
+# existem valores NaN ?
+# existem valores Nulos (necessários) ?
+# conciliar se o FGTS representa 8,5% em todas as linhas, caso não corrigir
+# conciliar se as Férias representam 1/3 do salário e corrigir
+# conciliar as datas de nascimento para verificar se existe impossiblidade de filhos
+# conciliar ajuda de custo x salário x filhos x ativo 
+# conciliar cesta báscia x salaário x filhos x ativo
+# somar as colunas salários e filhos
+# apresentar a média salarial por filho
+# somar as colunas salários, filhos e média por filho, somente de quem tem acima de 3 filhos
+# nomes dissonantes de genero ?
