@@ -1,9 +1,9 @@
 import pandas as pd
 from pandas import ExcelFile
 
-df = pd.read_csv('/temperature.csv')
+df = pd.read_csv('temperature.csv')
 excel_file: ExcelFile = pd.ExcelFile(
-    '/temperature.xlsx')
+    'temperature.xlsx')
 
 print('\n01\n', df.sort_values)
 print('\n02 Ordenação crescente por coluna\n', df.sort_values(by='temperatura'))
