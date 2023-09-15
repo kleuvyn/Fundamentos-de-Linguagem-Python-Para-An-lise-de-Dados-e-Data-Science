@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from pandas import ExcelFile
+import matplotlib.pyplot as plt
 
 df = pd.read_csv('./temperature.csv')
 excel_file: ExcelFile = pd.ExcelFile(
@@ -53,5 +54,16 @@ output.info()
 # estatisticas o
 output.describe()
 
+
 # contagem de valore gerados
-output['new_classificacao'].values_counts().plot.bar(figsize=(10, 5), rot =0, title='# de novos valores gerados');
+output['new_classificacao'].value_counts().plot.bar(figsize=(10, 5),
+                                                     rot=0,
+                                                     title='# de novos valores gerados');
+plt.show()
+
+# distribuicao do output produzido
+# conseguimos inferir a classificacao de novas temperaturas
+# a partir de um dataset com 6 exemplos
+output.boxplot(by='new_classificacao', figsize=(10, 5));
+plt.show()
+
